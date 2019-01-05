@@ -23,6 +23,8 @@ public class MetricsFactory {
 
 	private static final ResettableFunction<MetricConfig, DefaultCounter> COUNTER_RESETTABLE_FUNCTION = DefaultCounter::new;
 
+	private static final Function<MetricConfig, DefaultTimer> TIMER_FUNCTION = DefaultTimer::new;
+
 	public static ResettableGauge newResettableGauge(MetricConfig metricConfig, boolean reset) {
 		return getOrCreate(metricConfig, DefaultResettableGauge.class, reset, RESETTABLE_GAUGE_RESETTABLE_FUNCTION);
 	}
@@ -96,6 +98,27 @@ public class MetricsFactory {
 
 	public static Counter newCounter(MetricConfig metricConfig, boolean reset) {
 		return getOrCreate(metricConfig, DefaultCounter.class, reset, COUNTER_RESETTABLE_FUNCTION);
+	}
+
+	public static DefaultTimer newDefaultTimer(MetricConfig metricConfig) {
+		return getOrCreate(metricConfig, DefaultTimer.class, TIMER_FUNCTION);
+	}
+
+
+	private static <T extends MetricItem> T getOrCreate(MetricConfig metricConfig, Class<T> clazz, Function<MetricConfig, T> function) {
+		MetricItem metricItem = get(metricConfig);
+		if (metricItem != null) {
+			if (clazz.isInstance(metricItem)) {
+				return clazz.cast(metricItem);
+			}
+		}
+		T metricObj = function.apply(metricConfig);
+		return register(metricConfig, metricObj);
+	}
+
+	@FunctionalInterface
+	public interface Function<T, R> {
+		R apply(T t);
 	}
 
 	@FunctionalInterface
