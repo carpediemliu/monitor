@@ -19,8 +19,34 @@ public class MetricsExecutorService implements NamedExecutorService {
 	private static final String THREAD_POOL_TASK_STATUS = "thread.pool.task.status";
 
 	private static final String THREAD_POOL_STATUS = "thread.pool.status";
+
 	private static final String THREAD_POOL_DURATION = "thread.pool.task.duration";
 
+	private final ExecutorService delegate;
+
+	private final String name;
+//
+//	private final Timer duration;
+//
+//	private final Counter submitted;
+//
+//	private final Counter running;
+//
+//	private final Counter completed;
+//
+//	private final Counter rejected;
+
+
+	public MetricsExecutorService(NamedExecutorService delegate) {
+		this(delegate, delegate.getName());
+	}
+
+	public MetricsExecutorService(ExecutorService delegate, String name) {
+		this.delegate = delegate;
+		this.name = name;
+
+		String metricName = THREAD_POOL_DURATION;
+	}
 
 	@Override
 	public String getName() {
