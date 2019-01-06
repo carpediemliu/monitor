@@ -12,7 +12,7 @@ import org.vitoliu.common.metrics.metric.impl.MetricsFactory;
 public class CounterBuilder extends AbstractResetBuilder<Counter> {
 
 
-	CounterBuilder(String metricName) {
+	public CounterBuilder(String metricName) {
 		super(metricName, true);
 	}
 

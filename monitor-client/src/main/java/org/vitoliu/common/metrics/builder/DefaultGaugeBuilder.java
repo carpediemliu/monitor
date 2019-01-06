@@ -15,7 +15,7 @@ public class DefaultGaugeBuilder extends AbstractBuilder<Gauge> {
 
 	private final GaugeComputer gaugeComputer;
 
-	DefaultGaugeBuilder(String metricName, GaugeComputer gaugeComputer) {
+	public DefaultGaugeBuilder(String metricName, GaugeComputer gaugeComputer) {
 		super(metricName);
 		this.gaugeComputer = gaugeComputer;
 	}
